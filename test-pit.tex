@@ -1,0 +1,141 @@
+\documentclass[a4paper]{paper}
+
+\title{A Probabilistic Approach to Test Pitting}
+\author{Rich Wareham}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+In this text we consider a probabilistic approach to test pit data in which we
+assign a probability to each test pit in relation to its wider context within a
+site or, in a mathematically equivalent manner, the probability of a given site
+given the wider context of the area. We do this by comparing weights or sherd
+counts which are partitioned into different eras.
+
+Conceptually we wish to find some formula which reflects our prior belief that a
+test pit which has a larger proportion of, for example, Roman pottery in it in
+comparison to other test pits in the area is in some way more 'surprising' (has
+a lower probability) than test pits whose pottery proportions match the site as
+a whole.
+
+Throughout this document we shall consider a single test pit within a collection
+of pits on the same site and use the weight of pottery as the measured value.
+The mathematics works for both pottery weight or sherd counts and may trivially
+be extended to consider the probability of sites within wider contexts by
+considering an individual site as a single large test pit.
+
+\section{Notation}
+
+Assume that there are $N$ test pits in the site. For the $i$-th test pit we
+denote the weight of Roman era pottery as $R_i$, the weight of Early Medieval
+pottery as $E_i$, Late Medieval as $L_i$ and High Medieval as $H_i$. The total
+weight of pottery is denoted as $T_i$ and we make the assumption that all potter
+in the pit comes from one of our designated eras. That is to say that we assume
+\[
+    T_i = R_i + E_i + L_i + H_i.
+\]
+
+Given these individual test pit weights we can derive the \emph{total} weights.
+For example the total weight of Roman pottery, $R$, is given by
+\[
+    R = R_1 + R_2 + \cdots + R_N \equiv \sum_{i=1}^N R_i
+\]
+and similar expressions can be written down for the total amounts of Early, Late
+and High Medieval, $E$, $L$ and $H$ respectively and also the total weight of
+pottery over all pits, $T = R + E + L + H$.
+
+Sometimes, for convenience's sake, we refer to the \emph{normalised} weights,
+for example $R'_i \equiv R_i / T_i$ which can be interpreted as the
+\emph{proportion} of, in this instance, Roman pottery within the pit.
+
+\section{Assumptions and Definitions}
+
+Given a particular pit we assume that there is some notional ``true'' proportion
+of pottery which we cannot measure directly. Instead we can only measure the
+proportion which survives. For example if 400g of Roman pottery went into the
+pit, we may only get 4g which survives. This loss of pottery is statistical;
+even if we know that, on average, 1\% of Roman pottery survives that does not
+mean that finding 4g of Roman pottery in a pit means exactly 400g of pottery
+went into it. Instead we can say that our best estimate is that there was
+originally 400g of pottery plus or minus some statistical error. For the
+purposes of this discussion we shall assume that pottery loss is approximated by
+a Poisson process.
+
+In practical terms this means that given a weight of pottery in a pit of $R_i$
+we assume that this number is a random variable with variance equal to $R_i$. We
+further assume this number to be normally distributed. There is admittedly
+little to justify this assumption beyond convenience of mathematics and that is
+matches our prior intuition that test pits with a great deal of pottery in are
+likely to have proportions closer to the ``true'' values than test pits with
+comparatively little pottery in.
+
+Our observation model is therefore to assume that the proportion of Roman
+pottery which could survive in test pit $i$, $r'_i$, is distributed according to
+\[
+    r'_i \sim \mathcal{N}\left(\frac{R_i}{T_i}, \frac{1}{\sqrt{R_i T_i}} \right).
+\]
+Again this reflects our prior belief; the actual proportion of Roman pottery put
+into the pit is most likely to be the proportion we find within the pit and the
+error in this value goes down the more Roman pottery we find and the more
+pottery which we find in general. Similar equations can be found for $e_i,
+\ell_i$ and $h_i$.
+
+\section{Analysis}
+
+Let us consider the entire site as a single test pit. Using our observation
+model above we expect the proportion of Roman pottery to have the following
+likelihood:
+\[
+    p(x | R, T) = \frac{\sqrt{R T}}{\sqrt{2\pi}} \exp \left(
+        - 2 \left(x - \frac{R}{T}\right)^2 R T  \right).
+\]
+This is simply the result of substituting our expected mean and variance into
+the standard form for a Gaussian PDF.
+
+If we let $R$ and $T$ be the Roman era and total weights \emph{excluding} test
+pit $i$ then we note that $p(x | R,T)$ is necessarily independent of $p(x | R_i,
+T_i)$ and hence
+\[
+    p(x | R, T, R_i, T_i) = p(x | R, T) p(x | R_i, T_i).
+\]
+
+Eliding some trivial Bayesian analysis and marginalising out $x$ we note that
+the posterior probabilities are symmetric:
+\[
+    P(R,T | R_i, T_i) = P(R_i, T_i | R,T)
+    = \int p(x | R, T) p(x | R_i, T_i) \, \mathrm{d}x.
+\]
+
+Pleasingly this is the integral of a product of two Gaussian PDFs. The product
+of two Gaussian PDFs in $x$ is itself a Gaussian PDF in $x$ scaled by another
+Gaussian PDF of the parameters. Since that second PDF is independent of $x$ it
+becomes a simple scaling term for the integral. The first PDF integrates to
+unity by definition and thus we are left with a single Gaussian PDF in the
+parameters:
+\[
+    P(R,T | R_i, T_i) = P(R_i, T_i | R,T) =
+    \frac{1}{\sqrt{2 \pi B_R}} \, \exp \left(
+    - \frac{A_R^2}{2 B_R}
+    \right)
+\]
+where
+\[
+    A_R = \frac{R_i}{T_i} - \frac{R}{T}, \quad
+    B_R = \frac{1}{R_i T_i} + \frac{1}{R T}.
+\]
+
+If we define the \emph{surprise} of test pit $i$ to be the reciprocal of the
+posterior probability then
+\[
+    S^{(R)}_i = \sqrt{2\pi B_R} \, \exp \left( \frac{A_R^2}{2B_R} \right)
+\]
+where $S^{(R)}_i$ is the surprise of the proportion of Roman pottery in test pit
+$i$. Replacing $R$ with $E, L$ and $H$ we obtain similar results for Early, Late
+and High Medieval pottery proportions.
+
+\end{document}
+
+% vim:sw=4:sts=4:et:tw=80
