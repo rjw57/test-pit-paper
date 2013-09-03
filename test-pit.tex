@@ -2,7 +2,7 @@
 \usepackage{amsmath}
 \usepackage{microtype}
 
-\title{A Probabilistic Approach to Test Pitting}
+\title{A Statistical Approach to Test Pitting}
 \author{%
     \IEEEauthorblockN{Rich Wareham}
     \IEEEauthorblockA{Signal Processing and Communications Laboratory\\
@@ -26,21 +26,22 @@
 
 \section{Introduction}
 
-In this text we consider a probabilistic approach to analysing test pit data in
+In this text we consider a statistical approach to analysing test pit data in
 which we assign a probability to each test pit in relation to its wider context
 within a site or, in a mathematically equivalent manner, the probability of a
-given site given the wider context of the area. We do this by comparing weights
+given site given the wider context of the area. We do this by comparing counts
 and/or sherd counts which are partitioned into different eras.
 
-Conceptually we wish to find some formula which reflects our prior belief that a
+Conceptually we wish to find some statistic which reflects our prior belief that a
 test pit which has a larger proportion of, for example, Roman pottery in it in
 comparison to other test pits in the area is in some way more `surprising',
 i.e.\ has a lower probability, than test pits whose pottery proportions match
-the site as a whole.
+the site as a whole. We aim that this statistic be useful for `calling
+attention' to interesting test pits.
 
 Throughout this document we shall consider a single test pit within a collection
-of pits on the same site and use the weight of pottery as the measured value.
-The mathematics works for both pottery weight or sherd counts and may trivially
+of pits on the same site and use the count of pottery as the measured value.
+The mathematics works for both pottery count or sherd counts and may trivially
 be extended to consider the probability of entire sites within wider contexts of
 settlement by considering an individual site as a single large test pit. Indeed,
 such an approach is likely, given the greater quantities of data, to lead to
@@ -55,130 +56,87 @@ category and that all shreds being considered have an associated category.
 \section{Notation}
 
 Assume that there are $N$ test pits in the site. For the $i$-th test pit we
-denote the weight of Roman era pottery as $R_i$, the weight of Early Medieval
-pottery as $E_i$, Late Medieval as $L_i$ and High Medieval as $H_i$. The total
-weight of pottery is denoted as $T_i$ and we make the assumption that all
-pottery in the pit comes from one of our designated eras. That is to say that we
-assume
+denote the count of Roman era pottery sherds as $R_i$, the count of Early
+Medieval pottery as $E_i$, Late Medieval as $L_i$ and High Medieval as $H_i$.
+The total count of pottery sherds is denoted as $T_i$ and we make the assumption
+that all pottery in the pit comes from one of our designated eras. That is to
+say that we assume
 \[
     T_i = R_i + E_i + L_i + H_i.
 \]
 
-Given these individual test pit weights we can derive the \emph{total} weights.
-For example the total weight of Roman pottery, $R$, is given by
+Given these individual test pit counts we can derive the \emph{total} count.
+For example the total count of Roman pottery, $R$, is given by
 \[
     R = R_1 + R_2 + \cdots + R_N \equiv \sum_{i=1}^N R_i
 \]
 and similar expressions can be written down for the total amounts of Early, Late
-and High Medieval, $E$, $L$ and $H$ respectively and also the total weight of
+and High Medieval, $E$, $L$ and $H$ respectively and also the total count of
 pottery over all pits, $T = R + E + L + H$.
 
-Sometimes, for convenience's sake, we refer to the \emph{normalised} weights,
+Sometimes, for convenience's sake, we refer to the \emph{normalised} counts,
 for example $R'_i \equiv R_i / T_i$ which can be interpreted as the
 \emph{proportion} of, in this instance, Roman pottery within the pit.
 
-\section{Assumptions and Definitions}
-
-Given a particular pit we assume that there is some notional ``true'' proportion
-of pottery which we cannot measure directly. Instead we can only measure the
-proportion which survives. For example if 400g of Roman pottery went into the
-pit, we may only get 4g which survives. This loss of pottery is statistical;
-even if we know that, on average, 1\% of Roman pottery survives that does not
-mean that finding 4g of Roman pottery in a pit means exactly 400g of pottery
-went into it. Instead we can say that our best estimate is that there was
-originally 400g of pottery plus or minus some statistical error. For the
-purposes of this discussion we shall assume that pottery loss is approximated by
-a Poisson process. Such a process is one in which a number of individual
-independent events contribute to an overall effect. In this case we assume that
-each event which causes some sherd of pottery to decay and disappear is
-independent of each other event. We further assume this variable to be
-approximately normally distributed in the range in which we are analysing. That
-is to say that we are dealing with levels of pottery in which the Poisson
-distribution is reasonably approximated by the Gaussian distribution. \emph{De
-facto} this will be valid when the total sherd counts get above six or seven.
-
-Having justified the use of normal distributions, our observation model is to
-assume that the unmeasurable ``true'' proportion of Roman pottery which went
-into a test pit is $r'_i$ and is distributed according to
-\[
-    r'_i \sim \mathcal{N}\left(\mu = \frac{R_i}{T_i}, \sigma = \frac{1}{\sqrt{R_i T_i}} \right).
-\]
-This reflects our prior belief that the actual proportion of Roman pottery, when
-compared to pottery from other eras, put \emph{into} the pit is most likely to
-be the proportion we subsequently find \emph{within} the pit allowing for some
-error. This error is smaller if we find more Roman pottery and also if we find
-more pottery in general. Similar equations can be formed for $e_i, \ell_i$ and
-$h_i$.
-
-This model has been somewhat `plucked from the air' in that it is proposed as a
-reasonable model of our prior belief whose behaviour matches one's intuition as
-an arch\ae ologist. Other models are possible.
-
-\section{Analysis}
-
-Let us consider the entire site as a single test pit. Using our observation
-model above we expect the true proportion of Roman pottery over the entire site,
-$r'$, which we cannot directly measure, to have the following likelihood:
-\[
-    p(r' | R, T) = \frac{\sqrt{R T}}{\sqrt{2\pi}} \exp \left(
-        - 2 \left(r' - \frac{R}{T}\right)^2 R T  \right).
-\]
-This is simply the result of substituting our expected mean and variance into
-the standard form for a Gaussian PDF.
+\section{Welch's t test}
 
 If we let $R_{\setminus i}$ and $T_{\setminus i}$ be the Roman era and total
-weights \emph{excluding} test pit $i$ then we note that $p(r' | R_{\setminus
-i},T_{\setminus i})$ is necessarily independent of $p(r' | R_i, T_i)$ and hence
+counts \emph{excluding} test pit $i$ then we note that we have two completely
+independent estimators for the proportion of Roman pottery on the site:
 \[
-    p(r' | R_{\setminus i}, T_{\setminus i}, R_i, T_i) = p(r' | R_{\setminus i},
-    T_{\setminus i}) p(r' | R_i, T_i).
+    R'_i = \frac{R_i}{T_i}, \quad \mbox{and,} \quad
+    R'_{\setminus i} = \frac{R_{\setminus i}}{T_{\setminus i}}.
 \]
 
-Eliding some trivial Bayesian analysis and marginalising out $r'$ we note that
-the posterior probabilities are symmetric:
-\begin{align*}
-    P(R_{\setminus i},T_{\setminus i} | R_i, T_i) &= P(R_i, T_i | R_{\setminus
-    i},T_{\setminus i}) \\
-    & = \int p(x | R_{\setminus i}, T_{\setminus i}) p(x | R_i, T_i) \, \mathrm{d}x.
-\end{align*}
-We have also integrated out the true unmeasurable value $x$ leaving us with an
-expression only in terms we can measure.  This expression is the integral of a
-product of two Gaussian PDFs.  The product of two Gaussian PDFs in $x$ is itself
-a Gaussian PDF in $x$ scaled by another Gaussian PDF of the parameters. Since
-that second PDF is independent of $x$ it becomes a simple scaling term for the
-integral. The first PDF integrates to unity, by definition, and thus we are left
-with a single Gaussian PDF in the parameters:
-\begin{align*}
-    P(R_{\setminus i},T_{\setminus i} | R_i, T_i) &= P(R_i, T_i | R_{\setminus
-    i},T_{\setminus i}) \\ &=
-    \frac{1}{\sqrt{2 \pi B^{(i)}_R}} \, \exp \left(
-    - \frac{{A^{(i)}_R}^2}{2 B^{(i)}_R}
-    \right)
-\end{align*}
+If test pit $i$ is unsurprising, we expect $R'_i$ to approximately equal
+$R'_{\setminus i}$. Welch's t test can be used to determine if any differences
+are statistically significant. Specifically, for each test pit, $i$, one
+computes the statistic
+\[
+    t^{(R)}_i = \frac{A^{(i)}_R}{\sqrt{B^{(i)}_R}}
+\]
 where
 \[
-    A^{(i)}_R = \frac{R_i}{T_i} - \frac{R_{\setminus i}}{T_{\setminus i}}, \quad
-    B^{(i)}_R = \frac{1}{R_i T_i} + \frac{1}{R_{\setminus i} T_{\setminus i}}.
+    A^{(i)}_R = \frac{R_i}{T_i} - \frac{R_{\setminus i}}{T_{\setminus i}},
+    \quad\mbox{and,}\quad
+    B^{(i)}_R = \frac{\sigma^2_i}{T_i} +
+    \frac{\sigma^2_{\setminus i}}{T_{\setminus i}},
 \]
-
-If we define the \emph{surprise} of test pit $i$ to be the reciprocal of the
-posterior probability then
+and $\sigma^2_i$ and $\sigma^2_{\setminus i}$ are the sample variances. Since we
+know the samples for test pit $i$ consist of $R_i$ ones and $T_i-R_i$ zeros,
 \[
-    S^{(R)}_i = \sqrt{2\pi B^{(i)}_R} \, \exp \left( \frac{{A^{(i)}_R}^2}{2B^{(i)}_R} \right)
+    \sigma^2_i = \frac{1}{T_i-1} \left[
+        R_i\left(1-\frac{R_i}{T_i}\right)^2 +
+    (T_i-R_i)\left(-\frac{R_i}{T_i}\right)^2 \right]
 \]
-where $S^{(R)}_i$ is the surprise of the proportion of Roman pottery in test pit
-$i$. Replacing $R$ with $E, L$ and $H$ we obtain similar results for Early, Late
-and High Medieval pottery proportions.
-
-We may further interpret the value within the exponentiation as the square of
-the number of standard deviations the observed pottery count is from that
-expected by the null hypothesis. We may therefore compute a $p$-value via the
-error function or simply choose a threshold; a 3-sigma threshold would, for
-example, correspond to:
-
+by simple application of the formula for sample variance. Multiplying out, we
+obtain:
+\begin{align*}
+    \sigma^2_i &= \frac{1}{T_i-1} \left[
+        R_i - \frac{2R_i^2}{T_i} + \frac{R_i^3}{T_i^2} +
+        \frac{T_iR_i^2}{T_i^2} - \frac{R_i^3}{T_i^2}
+    \right] \\
+    &= \frac{1}{T_i-1} \left[
+        R_i - \frac{R_i^2}{T_i} 
+    \right] =
+    \frac{T_i R_i - R_i^2}{T_i(T_i-1)}.
+\end{align*}
+One can similarly obtain a relation for $\sigma^2_{\setminus i}$ and hence,
 \[
-    \left|\frac{A^{(i)}_R}{\sqrt{2 B^{(i)}_R}}\right| \ge 3.
+    B^{(i)}_R =
+    \frac{T_i R_i - R_i^2}{T^2_i(T_i-1)} +
+    \frac{T_{\setminus i} R_{\setminus i} - R_{\setminus i}^2}{T^2_{\setminus
+    i}(T_{\setminus i}-1)}.
 \]
+
+There exists a standard formula for the degrees of freedom from which We can
+obtain a $p$-value for the null hypothesis via the Student $t$ distribution or
+make use of the rule of thumb that
+\[
+    \left|\frac{A^{(i)}_R}{\sqrt{B^{(i)}_R}}\right| \ge 3
+\]
+indicates a statistically significant result. (For degrees of freedom from 1 to
+$+\infty$ this rule holds.)
 
 \section{Conclusion}
 
@@ -187,14 +145,17 @@ over time and obtained a statistic which may be used to evaluate the
 significance of one test pit in comparison to others within a similar location.
 Specifically, for the example of Roman pottery, the value
 \[
-    n^{(R)}_i = \frac{R_i \cdot T^{-1}_i - R_{\setminus i} \cdot T^{-1}_{\setminus
-    i}}{\sqrt{2}\sqrt{(R_i T_i)^{-1} + (R_{\setminus i}T_{\setminus i})^{-1}}}
+    t^{(R)}_i = \frac{R_i \cdot T^{-1}_i - R_{\setminus i} \cdot T^{-1}_{\setminus
+    i}}{\sqrt{
+    \frac{T_i R_i - R_i^2}{T^2_i(T_i-1)} +
+    \frac{T_{\setminus i} R_{\setminus i} - R_{\setminus i}^2}{T^2_{\setminus
+    i}(T_{\setminus i}-1)}}}
 \]
 may be computed for the $i$-th test pit and can be interpreted as a number of
 standard deviations away from the null hypothesis. Consequently, a value of
-$|n^{(R)}_i| \ge 3$ for test pit $i$ can be used to conclude that the proportion
+$|t^{(R)}_i| \ge 3$ for test pit $i$ can be used to conclude that the proportion
 of Roman pottery in test pit $i$ differs from neighbouring test pits in a
-statistically significant way. The sign of $n^{(R)}_i$ indicates whether this
+statistically significant way. The sign of $t^{(R)}_i$ indicates whether this
 differences is in the form of a surprisingly little (-ve) or a surprisingly
 large (+ve) amount of pottery. Similar expressions can be formed for the other
 eras.
