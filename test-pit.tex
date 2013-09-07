@@ -19,10 +19,10 @@
     one test pit when compared to others within some shared context, for example
     a single village. We do this by developing a statistical model for test pit
     evolution and then use the model to provide a data-driven test for
-    significance based on Welch's $t$ test. For our purposes, `significant' is
-    taken to mean `surprising given the wider context'. Such significant test
-    pits can be used to localise settlement or other processes leading to
-    larger-scale potter deposition.
+    significance based on Welch's $t$ test\cite{welch}. For our purposes,
+    `significant' is taken to mean `surprising given the wider context'. Such
+    significant test pits can be used to localise settlement or other processes
+    leading to larger-scale pottery deposition.
 \end{abstract}
 
 \section{Introduction}
@@ -48,7 +48,7 @@ an individual site as a single large test pit. Indeed, such an approach is
 likely, given the greater quantities of data, to lead to firmer conclusions at
 the expense of coarser localisation.
 
-For the purposes of illustration, we will consider potter to fall into the
+For the purposes of illustration, we will consider pottery to fall into the
 categories Roman, Early Medieval, Late Medieval, High Medieval. This
 categorisation is purely conventional and the technique below will work with any
 pottery categorisation assuming that no one sherd may fall into more than one
@@ -90,9 +90,9 @@ independent estimators for the proportion of Roman pottery on the site:
 \]
 
 If test pit $i$ is unsurprising, we expect $R'_i$ to approximately equal
-$R'_{\setminus i}$. Welch's $t$ test can be used to determine if any differences
-are statistically significant. Specifically, for each test pit, $i$, one
-computes the statistic
+$R'_{\setminus i}$. Welch's $t$ test\cite{welch} can be used to determine if any
+differences are statistically significant. Specifically, for each test pit, $i$,
+one computes the statistic
 \[
     t^{(R)}_i = \frac{A^{(i)}_R}{\sqrt{B^{(i)}_R}}
 \]
@@ -143,7 +143,7 @@ however, it is usually sufficient to make use of the rule of thumb that
 indicates a statistically significant result. (For degrees of freedom from 1 to
 $+\infty$ this rule is reasonable.)
 
-For completeness, the relation for $\nu^{(R)}_i$ is.
+For completeness, the relation for $\nu^{(R)}_i$ is\cite{welch}.
 \[
     \nu^{(R)}_i = \frac{\left( B^{(i)}_R \right)^2}{C^{(i)}_R}
 \]
@@ -182,6 +182,13 @@ pottery from one era or a relatively large amount of pottery in general are more
 indicative of the ``true'' pottery distribution and that such indicative test
 pits which vary greatly from the rest of the site are significant. The aim of
 the statistic is to flag those test pits worthy of closer inspection.
+
+\begin{thebibliography}{1}
+\bibitem{welch}
+    Welch, B.~L.~(1947). \emph{The generalization of ''Student's`` problem when
+    several different population variances are involved}. Biometrika \textbf{34} (1–2):
+    28–35. doi:10.1093/biomet/34.1-2.28. MR 1.
+\end{thebibliography}
 
 \end{document}
 
