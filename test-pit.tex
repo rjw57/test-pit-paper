@@ -19,18 +19,18 @@
     one test pit when compared to others within some shared context, for example
     a single village. We do this by developing a statistical model for test pit
     evolution and then use the model to provide a data-driven test for
-    significance. For our purposes, `significant' is taken to mean `surprising
-    given the wider context'. Such significant test pits can be used to localise
-    settlement or other processes leading to larger-scale potter deposition.
+    significance based on Welch's $t$ test. For our purposes, `significant' is
+    taken to mean `surprising given the wider context'. Such significant test
+    pits can be used to localise settlement or other processes leading to
+    larger-scale potter deposition.
 \end{abstract}
 
 \section{Introduction}
 
 In this text we consider a statistical approach to analysing test pit data in
-which we assign a probability to each test pit in relation to its wider context
-within a site or, in a mathematically equivalent manner, the probability of a
-given site given the wider context of the area. We do this by comparing counts
-and/or sherd counts which are partitioned into different eras.
+which we assign a number indicating the significance, in a statistical sense,
+of a given site given the wider context of the area. We do this by comparing
+sherd counts which are partitioned into different eras.
 
 Conceptually we wish to find some statistic which reflects our prior belief that a
 test pit which has a larger proportion of, for example, Roman pottery in it in
@@ -41,11 +41,12 @@ attention' to interesting test pits.
 
 Throughout this document we shall consider a single test pit within a collection
 of pits on the same site and use the count of pottery as the measured value.
-The mathematics works for both pottery count or sherd counts and may trivially
-be extended to consider the probability of entire sites within wider contexts of
-settlement by considering an individual site as a single large test pit. Indeed,
-such an approach is likely, given the greater quantities of data, to lead to
-firmer conclusions at the expense of coarser localisation.
+The mathematics works for both pottery weight or sherd counts, although shred
+counts are more convenient, and may trivially be extended to consider the
+probability of entire sites within wider contexts of settlement by considering
+an individual site as a single large test pit. Indeed, such an approach is
+likely, given the greater quantities of data, to lead to firmer conclusions at
+the expense of coarser localisation.
 
 For the purposes of illustration, we will consider potter to fall into the
 categories Roman, Early Medieval, Late Medieval, High Medieval. This
@@ -89,7 +90,7 @@ independent estimators for the proportion of Roman pottery on the site:
 \]
 
 If test pit $i$ is unsurprising, we expect $R'_i$ to approximately equal
-$R'_{\setminus i}$. Welch's t test can be used to determine if any differences
+$R'_{\setminus i}$. Welch's $t$ test can be used to determine if any differences
 are statistically significant. Specifically, for each test pit, $i$, one
 computes the statistic
 \[
@@ -102,7 +103,10 @@ where
     B^{(i)}_R = \frac{\sigma^2_i}{T_i} +
     \frac{\sigma^2_{\setminus i}}{T_{\setminus i}},
 \]
-and $\sigma^2_i$ and $\sigma^2_{\setminus i}$ are the sample variances. Since we
+and $\sigma^2_i$ and $\sigma^2_{\setminus i}$ are the sample variances.
+
+For sherd weights, these variances would have to be calculated by measuring the
+weight of each individual sherd. For sherd counts we can make use of a trick: we
 know the samples for test pit $i$ consist of $R_i$ ones and $T_i-R_i$ zeros,
 \[
     \sigma^2_i = \frac{1}{T_i-1} \left[
@@ -129,14 +133,25 @@ One can similarly obtain a relation for $\sigma^2_{\setminus i}$ and hence,
     i}(T_{\setminus i}-1)}.
 \]
 
-There exists a standard formula for the degrees of freedom from which We can
-obtain a $p$-value for the null hypothesis via the Student $t$ distribution or
-make use of the rule of thumb that
+There exists a standard formula for the degrees of freedom, $\nu^{(R)}_i$, from
+which we can obtain a $p$-value for the null hypothesis via the Student's
+$t$-distribution which is parameterised by $\nu^{(R)}_i$. For our purposes,
+however, it is usually sufficient to make use of the rule of thumb that
 \[
     \left|\frac{A^{(i)}_R}{\sqrt{B^{(i)}_R}}\right| \ge 3
 \]
 indicates a statistically significant result. (For degrees of freedom from 1 to
-$+\infty$ this rule holds.)
+$+\infty$ this rule is reasonable.)
+
+For completeness, the relation for $\nu^{(R)}_i$ is.
+\[
+    \nu^{(R)}_i = \frac{\left( B^{(i)}_R \right)^2}{C^{(i)}_R}
+\]
+where
+\[
+    C^{(i)}_R = \frac{\sigma^4_i}{T_i^2 (1-T_i)} + \frac{\sigma^4_{\setminus
+    i}}{T_{\setminus i}^2 (1-T_{\setminus i})}.
+\]
 
 \section{Conclusion}
 
