@@ -92,7 +92,12 @@ independent estimators for the proportion of Roman pottery on the site:
 
 If test pit $i$ is unsurprising, we expect $R'_i$ to approximately equal
 $R'_{\setminus i}$. Welch's $t$ test\cite{welch} can be used to determine if any
-differences are statistically significant. Specifically, for each test pit, $i$,
+differences are statistically significant. To make use of this test we interpret
+$R'_i$ as the mean of $T_i$ samples. In the case of sherd counts, these are
+$R_i$ ones and $T_i - R_i$ zeros. For sherd weights, we need to know the total
+number of sherds and their individual weights to perform the same analysis. This
+information is usually unavailable and so we proceed assuming we're dealing with
+sherd counts. Specifically, for each test pit, $i$,
 one computes the statistic
 \[
     t^{(R)}_i = \frac{A^{(i)}_R}{\sqrt{B^{(i)}_R}}
@@ -107,7 +112,7 @@ where
 and $\sigma^2_i$ and $\sigma^2_{\setminus i}$ are the sample variances.
 
 For sherd weights, these variances would have to be calculated by measuring the
-weight of each individual sherd. For sherd counts we can make use of a trick: we
+weight of each individual sherd but for sherd counts we can make use of a trick: we
 know the samples for test pit $i$ consist of $R_i$ ones and $T_i-R_i$ zeros,
 \[
     \sigma^2_i = \frac{1}{T_i-1} \left[
